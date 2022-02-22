@@ -65,6 +65,8 @@ export class CarService {
 
             if(dto.dateStart.getDay() == 0 || dto.dateEnd.getDay() == 6){
                 throw new BadRequestException('On weekends Car Sharing is not working')
+            } else if(dto.dateStart.getDay() == 6 || dto.dateEnd.getDay() == 0){
+                throw new BadRequestException('On weekends Car Sharing is not working')
             }
             
             Object.assign(car, dto)
