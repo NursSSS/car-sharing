@@ -1,4 +1,4 @@
-import { IsDate, IsDateString } from "class-validator"
+import { IsDate, IsDateString, IsInt } from "class-validator"
 
 export class CreateCarDto {
     id?: number
@@ -9,5 +9,6 @@ export class CreateCarDto {
     @IsDateString()
     dateEnd: Date
 
+    @IsInt()
     telephone: number
 }

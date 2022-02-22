@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, Post } from '@nestjs/common';
 import { CarService } from './car.service';
 import { CreateCarDto } from './dto';
 import { findOneCarkDto } from './dto/find-one.dto';
@@ -20,5 +20,11 @@ export class CarController {
     @Post(':id')
     async create(@Param() {id}: findOneCarkDto, @Body() dto: CreateCarDto){
         return await this.service.create(id, dto)
+    }
+
+    @Delete(':id')
+    @HttpCode(204)
+    async delete(@Param() {id}: findOneCarkDto){
+        return await this.service.delete(id)
     }
 }

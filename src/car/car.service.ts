@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { CarEntity } from './entity/car-entity';
 import { Model } from 'mongoose';
@@ -81,5 +81,15 @@ export class CarService {
 
         await this.entity.create(dto)
         return Math.ceil(Math.abs(dto.dateEnd.getTime() - dto.dateStart.getTime()) / (1000 * 3600 * 24)) * carFromList.price
+    }
+
+    async delete(id: number){
+        const car = await this.entity.findOne({id: id})
+
+        if(!car){
+            throw new NotFoundException()
+        }
+
+        return await this.entity.deleteOne({id: id})
     }
 }
