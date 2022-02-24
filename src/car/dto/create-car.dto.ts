@@ -19,4 +19,11 @@ export class CreateCarDto {
     @ApiProperty()
     @IsInt()
     telephone: number
+
+    @ApiProperty({
+        required: false
+    })
+    @IsOptional()
+    @IsInt()
+    totalPrice: number
 }

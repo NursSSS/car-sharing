@@ -31,6 +31,13 @@ export class CarEntity {
         required: true
     })
     telephone: number
+
+    @ApiProperty()
+    @Prop({
+        type: Number,
+        required: true
+    })
+    totalPrice: number
 }
 
 export const CarSchema = SchemaFactory.createForClass(CarEntity)

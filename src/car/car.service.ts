@@ -37,7 +37,7 @@ export class CarService {
             {
                 id: 5,
                 title: 'Nissan SkyLine r34 GT-R',
-                price: 10123001239000
+                price: 123123
             }
         ]
     }
@@ -60,7 +60,7 @@ export class CarService {
         if(car){
             const resultOfDates = (car.dateEnd.getTime() + 259200000) - dto.dateEnd.getTime()
             if(resultOfDates > 0){
-                throw new BadRequestException('This car is not availabel now')
+                throw new BadRequestException('This car is not available now')
             }
 
             if(dto.dateStart.getDay() == 0 || dto.dateEnd.getDay() == 6){
@@ -68,10 +68,10 @@ export class CarService {
             } else if(dto.dateStart.getDay() == 6 || dto.dateEnd.getDay() == 0){
                 throw new BadRequestException('On weekends Car Sharing is not working')
             }
-            
+            dto.totalPrice = Math.ceil(Math.abs(dto.dateEnd.getTime() - dto.dateStart.getTime()) / (1000 * 3600 * 24)) * carFromList.price
+
             Object.assign(car, dto)
-            await car.save()
-            return Math.ceil(Math.abs(dto.dateEnd.getTime() - dto.dateStart.getTime()) / (1000 * 3600 * 24)) * carFromList.price
+            return await car.save()
         }
 
         if(dto.dateStart.getDay() === 0 || dto.dateEnd.getDay() === 6){
@@ -79,10 +79,11 @@ export class CarService {
         } else if(dto.dateStart.getDay() == 6 || dto.dateEnd.getDay() == 0){
             throw new BadRequestException('On weekends Car Sharing is not working')
         }
-        dto.id = carFromList.id
 
-        await this.entity.create(dto)
-        return Math.ceil(Math.abs(dto.dateEnd.getTime() - dto.dateStart.getTime()) / (1000 * 3600 * 24)) * carFromList.price
+        dto.id = carFromList.id
+        dto.totalPrice = Math.ceil(Math.abs(dto.dateEnd.getTime() - dto.dateStart.getTime()) / (1000 * 3600 * 24)) * carFromList.price
+
+        return await this.entity.create(dto)
     }
 
     async delete(id: number){
